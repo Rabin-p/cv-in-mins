@@ -29,8 +29,8 @@ const ProgressTracker = ({ steps, currentStep }: ProgressTrackerProps) => {
                     isCompleted
                       ? "bg-primary border-primary text-primary-foreground"
                       : isCurrent
-                      ? "border-primary bg-primary/10 text-primary"
-                      : "border-muted-foreground/30 text-muted-foreground"
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-muted-foreground/30 text-muted-foreground"
                   )}
                 >
                   {isCompleted ? (
@@ -42,17 +42,11 @@ const ProgressTracker = ({ steps, currentStep }: ProgressTrackerProps) => {
                 <span
                   className={cn(
                     "mt-1.5 text-[10px] md:text-xs font-medium text-center max-w-12 md:max-w-20 leading-tight",
-                    isCurrent ? "text-primary" : isCompleted ? "text-foreground" : "text-muted-foreground",
-                    !isCurrent && "hidden sm:block"
+                    isCurrent ? "text-primary" : isCompleted ? "text-foreground" : "text-muted-foreground"
                   )}
                 >
                   {step.label}
                 </span>
-                {isCurrent && (
-                  <span className="sm:hidden mt-1.5 text-[10px] font-medium text-primary text-center max-w-12 leading-tight">
-                    {step.label}
-                  </span>
-                )}
               </div>
 
               {!isLast && (
