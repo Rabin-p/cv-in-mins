@@ -8,6 +8,8 @@ import {
   type Experience,
   type Education,
   type OtherSection,
+  type CvSettings,
+  type CoverLetter,
 } from "@/types/userInfoTypes";
 
 const STORAGE_KEY = "cv-in-mins-data";
@@ -24,6 +26,12 @@ interface Cvstore {
   setSkill: (e: Skill) => void;
   setEducation: (e: Education) => void;
   setOthers: (e: OtherSection) => void;
+
+  setSettings: (data: CvSettings) => void;
+  updateSettings: (data: Partial<CvSettings>) => void;
+
+  setCoverLetter: (data: CoverLetter) => void;
+  updateCoverLetter: (data: Partial<CoverLetter>) => void;
 
   updateExperience: (id: string, data: Partial<Experience>) => void;
   updateSkill: (id: string, data: Partial<Skill>) => void;
@@ -49,22 +57,39 @@ const initialUser: UserData = {
   exp: [],
   edu: [],
   others: [],
+  settings: {
+    accentColor: "#2563eb",
+    template: "minimalist",
+  },
+  coverLetter: {
+    recipientName: "",
+    company: "",
+    position: "",
+    date: "",
+    opening: "",
+    body: "",
+    closing: "",
+    signature: "",
+  },
 };
 
-type ArrayKeys = 'skills' | 'exp' | 'edu' | 'others';
-type ArrayElement<K extends ArrayKeys> =
-  K extends 'skills' ? Skill :
-  K extends 'exp' ? Experience :
-  K extends 'edu' ? Education :
-  K extends 'others' ? OtherSection :
-  never;
+type ArrayKeys = "skills" | "exp" | "edu" | "others";
+type ArrayElement<K extends ArrayKeys> = K extends "skills"
+  ? Skill
+  : K extends "exp"
+    ? Experience
+    : K extends "edu"
+      ? Education
+      : K extends "others"
+        ? OtherSection
+        : never;
 
 export const useCvStore = create<Cvstore>()(
   persist(
     (set) => {
       const updateArray = <K extends ArrayKeys>(
         key: K,
-        updater: (arr: ArrayElement<K>[]) => ArrayElement<K>[]
+        updater: (arr: ArrayElement<K>[]) => ArrayElement<K>[],
       ) =>
         set((state) => ({
           cvData: {
@@ -97,7 +122,7 @@ export const useCvStore = create<Cvstore>()(
         setSkill: (data) => updateArray("skills", (arr) => [...arr, data]),
         updateSkill: (id, data) =>
           updateArray("skills", (arr) =>
-            arr.map((i) => (i.id === id ? { ...i, ...data } : i))
+            arr.map((i) => (i.id === id ? { ...i, ...data } : i)),
           ),
         removeSkill: (id) =>
           updateArray("skills", (arr) => arr.filter((i) => i.id !== id)),
@@ -106,7 +131,7 @@ export const useCvStore = create<Cvstore>()(
         setExperience: (data) => updateArray("exp", (arr) => [...arr, data]),
         updateExperience: (id, data) =>
           updateArray("exp", (arr) =>
-            arr.map((i) => (i.id === id ? { ...i, ...data } : i))
+            arr.map((i) => (i.id === id ? { ...i, ...data } : i)),
           ),
         removeExperience: (id) =>
           updateArray("exp", (arr) => arr.filter((i) => i.id !== id)),
@@ -115,7 +140,7 @@ export const useCvStore = create<Cvstore>()(
         setEducation: (data) => updateArray("edu", (arr) => [...arr, data]),
         updateEducation: (id, data) =>
           updateArray("edu", (arr) =>
-            arr.map((i) => (i.id === id ? { ...i, ...data } : i))
+            arr.map((i) => (i.id === id ? { ...i, ...data } : i)),
           ),
         removeEducation: (id) =>
           updateArray("edu", (arr) => arr.filter((i) => i.id !== id)),
@@ -125,12 +150,42 @@ export const useCvStore = create<Cvstore>()(
           updateArray("others", (arr) => [...(arr || []), data]),
         updateOtherSection: (id, data) =>
           updateArray("others", (arr) =>
-            (arr || []).map((i) => (i.id === id ? { ...i, ...data } : i))
+            (arr || []).map((i) => (i.id === id ? { ...i, ...data } : i)),
           ),
         removeOtherSection: (id) =>
           updateArray("others", (arr) =>
-            (arr || []).filter((i) => i.id !== id)
+            (arr || []).filter((i) => i.id !== id),
           ),
+
+        // --- Cover Letter ---
+        setCoverLetter: (data) =>
+          set((state) => ({
+            cvData: { ...state.cvData, coverLetter: data },
+            _lastUpdated: Date.now(),
+          })),
+        updateCoverLetter: (data) =>
+          set((state) => ({
+            cvData: {
+              ...state.cvData,
+              coverLetter: { ...state.cvData.coverLetter, ...data },
+            },
+            _lastUpdated: Date.now(),
+          })),
+
+        // --- Settings ---
+        setSettings: (data) =>
+          set((state) => ({
+            cvData: { ...state.cvData, settings: data },
+            _lastUpdated: Date.now(),
+          })),
+        updateSettings: (data) =>
+          set((state) => ({
+            cvData: {
+              ...state.cvData,
+              settings: { ...state.cvData.settings, ...data },
+            },
+            _lastUpdated: Date.now(),
+          })),
 
         // --- Clear Data ---
         clearData: () =>
@@ -154,6 +209,6 @@ export const useCvStore = create<Cvstore>()(
           }
         }
       },
-    }
-  )
+    },
+  ),
 );
