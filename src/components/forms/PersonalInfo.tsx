@@ -36,7 +36,8 @@ const PersonalInfoForm = ({ onNext }: PersonalInfoFormProps) => {
   };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const target = e.target as HTMLInputElement;
+    const file = target?.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
         return;
