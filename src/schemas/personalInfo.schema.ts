@@ -23,5 +23,5 @@ export const personalInfoSchema = z.object({
       instagram: optionalString(),
     })
     .optional(),
-  photo: z.instanceof(File).optional(),
+  photo: optionalString(),
 });
