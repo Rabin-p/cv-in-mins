@@ -115,6 +115,7 @@ const Education = ({ onNext, onBack }: EducationProps) => {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
+                    type="button"
                     variant="outline"
                     className={cn(
                       "w-full justify-start text-left font-normal h-9",
@@ -151,6 +152,7 @@ const Education = ({ onNext, onBack }: EducationProps) => {
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
+                      type="button"
                       variant="outline"
                       className={cn(
                         "w-full justify-start text-left font-normal h-9",
