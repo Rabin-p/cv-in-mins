@@ -117,6 +117,7 @@ const Experience = ({ onNext, onBack }: ExperienceProps) => {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
+                    type="button"
                     variant="outline"
                     className={cn(
                       "w-full justify-start text-left font-normal h-9",
@@ -153,6 +154,7 @@ const Experience = ({ onNext, onBack }: ExperienceProps) => {
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
+                      type="button"
                       variant="outline"
                       className={cn(
                         "w-full justify-start text-left font-normal h-9",
